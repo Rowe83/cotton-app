@@ -1,43 +1,37 @@
 "use client"
 
-import { Home, BarChart3, LineChart, User } from "lucide-react"
+import Link from "next/link"
+import { Home, TrendingUp, Newspaper, User } from "lucide-react"
+import { usePathname } from "next/navigation"
 
-interface NavigationProps {
-  activeTab: string
-  onTabChange: (tab: string) => void
-}
+export default function Navigation() {
+  const pathname = usePathname()
 
-export default function Navigation({ activeTab, onTabChange }: NavigationProps) {
-  const tabs = [
-    { id: "home", label: "首页", icon: Home },
-    { id: "market", label: "资讯", icon: BarChart3 },
-    { id: "predict", label: "预测", icon: LineChart },
-    { id: "profile", label: "我的", icon: User },
+  const navItems = [
+    { label: "首页", icon: Home, href: "/" },
+    { label: "行情", icon: TrendingUp, href: "/market" },
+    { label: "资讯", icon: Newspaper, href: "/news" },
+    { label: "我的", icon: User, href: "/profile" },
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-around">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            const isActive = activeTab === tab.id
-            return (
-              <button
-                key={tab.id}
-                onClick={() => onTabChange(tab.id)}
-                className={`flex-1 flex flex-col items-center justify-center py-4 gap-1 transition-colors border-t-2 ${
-                  isActive
-                    ? "border-accent text-accent"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Icon className="w-6 h-6" />
-                <span className="text-xs font-medium">{tab.label}</span>
-              </button>
-            )
-          })}
-        </div>
+    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur border-t border-border">
+      <div className="max-w-6xl mx-auto flex items-center justify-around">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center justify-center gap-1 py-3 px-4 text-xs font-medium transition ${
+                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <item.icon className="w-5 h-5" />
+              {item.label}
+            </Link>
+          )
+        })}
       </div>
     </nav>
   )

@@ -8,25 +8,13 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "新疆棉花市场 - 实时价格 & 市场分析",
-  description: "专业的棉花市场分析平台，提供实时价格查询、市场资讯、价格预测和个性化预警服务。",
+  title: "新棉通 - 新疆棉花市场分析平台",
+  description: "实时棉花价格行情、市场分析、价格预测、预警服务",
   generator: "v0.app",
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
   },
 }
 
@@ -36,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh" className="dark">
       <body className={`font-sans antialiased`}>
         {children}
         <Analytics />
