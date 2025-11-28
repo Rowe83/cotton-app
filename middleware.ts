@@ -17,10 +17,8 @@ export async function middleware(request: NextRequest) {
   // Refresh session if expired - required for Server Components
   const { data: { session } } = await supabase.auth.getSession()
 
-  // Protect authenticated routes
-  if (pathname.startsWith('/profile') && !session) {
-    return NextResponse.redirect(new URL('/', request.url))
-  }
+  // Allow access to profile page - it shows login prompt for unauthenticated users
+  // No redirect needed, let the page handle authentication UI
 
   // Redirect authenticated users away from auth pages
   if (pathname.startsWith('/auth') && session) {
