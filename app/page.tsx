@@ -1,55 +1,71 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { TrendingUp, BarChart3, Bell, ShoppingCart, ArrowRight, Zap } from "lucide-react"
+import { TrendingUp, BarChart3, Bell, ShoppingCart, ArrowRight, Zap, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import PriceCard from "@/components/price-card"
 import NewsCard from "@/components/news-card"
 import Navigation from "@/components/navigation"
+import { useRealtimeCottonPrices } from "@/hooks/use-cotton-prices"
+import { useRealtimeNews } from "@/hooks/use-news"
+import { formatLastUpdateTime, formatNewsTime } from "@/lib/time-utils"
 
 export default function Home() {
-  const [selectedTab, setSelectedTab] = useState("新闻")
+  const [selectedTab, setSelectedTab] = useState("头条")
+  const [lastUpdateTime, setLastUpdateTime] = useState<Date>(new Date())
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const priceData = [
-    {
-      title: "今日收购价（元/公斤）",
-      price: "15.82",
-      change: "+0.15%",
-      isPositive: true,
-      updateTime: "更新于: 10:35",
-      trend: "up",
-    },
-    {
-      title: "郑棉主力（元/吨）",
-      price: "14550",
-      change: "-0.08%",
-      isPositive: false,
-      updateTime: "更新于: 10:35",
-      trend: "down",
-    },
-  ]
+  const { prices, loading: pricesLoading, error: pricesError, refresh: refreshPrices } = useRealtimeCottonPrices()
+  const { news, loading: newsLoading, error: newsError, refresh: refreshNews } = useRealtimeNews(10)
 
-  const news = [
-    {
-      category: "头条",
-      time: "2小时前",
-      title: "新疆棉花收购价持续走强，市场信心得到提振",
-      image: "/cotton-bales.jpg",
-    },
-    {
-      category: "政策",
-      time: "8小时前",
-      title: "农业部发布最新棉花补贴政策解读",
-      image: "/government-building.jpg",
-    },
-    {
-      category: "分析",
-      time: "3天前",
-      title: "深度分析：全球棉花供需格局与未来价格走势",
-      image: "/analysis-data.jpg",
-    },
-  ]
+  // Update last update time when data changes
+  useEffect(() => {
+    if (prices.length > 0 || news.length > 0) {
+      setLastUpdateTime(new Date())
+    }
+  }, [prices, news])
+
+  // Pull to refresh functionality
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true)
+    try {
+      await Promise.all([refreshPrices(), refreshNews()])
+      setLastUpdateTime(new Date())
+    } catch (error) {
+      console.error('Refresh error:', error)
+    } finally {
+      setIsRefreshing(false)
+    }
+  }, [refreshPrices, refreshNews])
+
+  // Filter news by category
+  const filteredNews = news.filter(item => {
+    if (selectedTab === "头条") return item.category === "头条" || !item.category
+    if (selectedTab === "政策") return item.category === "政策"
+    if (selectedTab === "期货") return item.category?.includes("期货") || item.title?.includes("期货")
+    return true
+  }).slice(0, 6)
+
+  // Transform price data for display
+  const displayPriceData = prices.slice(0, 2).map(price => ({
+    title: `${price.variety_name}（元/吨）`,
+    price: price.price.toLocaleString(),
+    change: price.change || "0.00%",
+    isPositive: price.is_positive,
+    updateTime: `最后更新: ${formatLastUpdateTime(price.updated_at)}`,
+    trend: (price.is_positive ? "up" : "down") as "up" | "down",
+  }))
+
+  // Transform news data for display
+  const displayNews = filteredNews.map(item => ({
+    category: item.category || "新闻",
+    time: formatNewsTime(item.published_at),
+    title: item.title,
+    image: item.image_url || "/cotton-bales.jpg",
+  }))
+
+  const loading = pricesLoading || newsLoading
 
   return (
     <main className="min-h-screen bg-background pb-20">
@@ -61,22 +77,61 @@ export default function Home() {
               <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
             <h1 className="text-xl font-bold">新棉通</h1>
-            <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">新疆/原克苏</span>
+            <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded">新疆/阿克苏</span>
           </div>
-          <Button variant="ghost" size="sm">
-            <Bell className="w-5 h-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">
+              {formatLastUpdateTime(lastUpdateTime)}
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className={isRefreshing ? "animate-spin" : ""}
+            >
+              <RefreshCw className="w-5 h-5" />
+            </Button>
+            <Button variant="ghost" size="sm">
+              <Bell className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Core Price Overview */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         <h2 className="text-lg font-semibold mb-4">核心价格速览</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {priceData.map((item, idx) => (
-            <PriceCard key={idx} {...item} />
-          ))}
-        </div>
+        {pricesError ? (
+          <div className="text-center py-8">
+            <p className="text-destructive mb-2">数据加载失败</p>
+            <Button onClick={handleRefresh} variant="outline">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              重试
+            </Button>
+          </div>
+        ) : loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2].map((i) => (
+              <div key={i} className="h-32 bg-card rounded-lg animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {displayPriceData.map((item, idx) => (
+              <div
+                key={`${item.title}-${idx}`}
+                className={`transition-all duration-500 ${
+                  item.isPositive
+                    ? "animate-in slide-in-from-left-2"
+                    : "animate-in slide-in-from-right-2"
+                }`}
+              >
+                <PriceCard {...item} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Navigation Buttons */}
@@ -121,9 +176,33 @@ export default function Home() {
 
         {/* News List */}
         <div className="space-y-4">
-          {news.map((item, idx) => (
-            <NewsCard key={idx} {...item} />
-          ))}
+          {newsError ? (
+            <div className="text-center py-8">
+              <p className="text-destructive mb-2">新闻加载失败</p>
+              <Button onClick={handleRefresh} variant="outline">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                重试
+              </Button>
+            </div>
+          ) : loading ? (
+            Array.from({ length: 3 }, (_, i) => (
+              <div key={i} className="h-24 bg-card rounded-lg animate-pulse" />
+            ))
+          ) : displayNews.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">暂无{selectedTab}新闻</p>
+            </div>
+          ) : (
+            displayNews.map((item, idx) => (
+              <div
+                key={`${item.title}-${idx}`}
+                className="animate-in slide-in-from-bottom-2 duration-300"
+                style={{ animationDelay: `${idx * 100}ms` }}
+              >
+                <NewsCard {...item} />
+              </div>
+            ))
+          )}
         </div>
       </div>
 
