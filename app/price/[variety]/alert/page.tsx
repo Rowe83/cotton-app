@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Navigation from "@/components/navigation"
 import { getUserPriceAlerts, createPriceAlert, deletePriceAlert } from "@/lib/price-alerts"
-import { getCurrentUser } from "@/lib/auth"
+import { supabase } from "@/lib/supabase"
 import { useRealtimeCottonPrices } from "@/hooks/use-cotton-prices"
 import { formatLastUpdateTime } from "@/lib/time-utils"
 import type { PriceAlert } from "@/lib/types"
@@ -31,10 +31,8 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
     const initializeData = async () => {
       try {
         setLoading(true)
-        const [userData, alertsData] = await Promise.all([
-          getCurrentUser(),
-          user ? getUserPriceAlerts(user.id) : Promise.resolve([])
-        ])
+        const { data: { user: userData }, error } = await supabase.auth.getUser()
+        if (error) throw error
 
         setUser(userData)
         if (userData) {
@@ -49,6 +47,21 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
     }
 
     initializeData()
+
+    // Listen to auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      if (session?.user) {
+        getUserPriceAlerts(session.user.id).then(setAlerts).catch(console.error)
+      } else {
+        setAlerts([])
+      }
+      setLoading(false)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [])
 
   // Update last update time when data changes

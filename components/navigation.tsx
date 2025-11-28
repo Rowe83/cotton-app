@@ -15,10 +15,13 @@ export default function Navigation() {
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur border-t border-border">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-t border-border">
       <div className="max-w-6xl mx-auto flex items-center justify-around">
         {navItems.map((item) => {
-          const isActive = pathname === item.href
+          // Special handling for profile page - consider it active if we're on profile or any auth pages
+          const isActive = item.href === '/profile'
+            ? pathname === '/profile' || pathname.startsWith('/auth')
+            : pathname === item.href
           return (
             <Link
               key={item.href}
