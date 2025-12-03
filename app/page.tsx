@@ -92,9 +92,9 @@ export default function Home() {
             >
               <RefreshCw className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="sm">
-              <Bell className="w-5 h-5" />
-            </Button>
+          <Button variant="ghost" size="sm">
+            <Bell className="w-5 h-5" />
+          </Button>
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {displayPriceData.map((item, idx) => (
               <div
                 key={`${item.title}-${idx}`}
@@ -129,8 +129,8 @@ export default function Home() {
               >
                 <PriceCard {...item} />
               </div>
-            ))}
-          </div>
+          ))}
+        </div>
         )}
       </div>
 

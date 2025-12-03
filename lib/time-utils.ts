@@ -3,6 +3,9 @@ import { zhCN } from 'date-fns/locale'
 
 export function formatLastUpdateTime(date: string | Date): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
+  if (!dateObj || !(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
+    return '时间未知'
+  }
   const now = new Date()
   const diffInMinutes = Math.floor((now.getTime() - dateObj.getTime()) / (1000 * 60))
 
