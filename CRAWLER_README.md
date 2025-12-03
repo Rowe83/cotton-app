@@ -82,6 +82,20 @@ CREATE TABLE news (
 );
 ```
 
+## 🔧 当前状态
+
+**开发环境**: 目前使用模拟数据，确保应用功能正常工作。
+
+**生产环境**: 当部署到 Vercel（Node.js 20+）时，会自动启用真实的网页爬取功能。
+
+#### 为什么使用模拟数据？
+1. **Node.js 版本兼容性**: 本地开发环境使用 Node.js 16，不支持最新的 Puppeteer
+2. **Chromium 设置**: Vercel 环境需要特殊的 Chromium 配置
+3. **反爬虫措施**: 目标网站可能有反爬虫保护
+
+#### 启用真实爬取
+在 Vercel 生产环境中，爬虫会自动使用真实的网页抓取功能。
+
 ## 🚀 部署和使用
 
 ### 1. 安装依赖
@@ -89,7 +103,18 @@ CREATE TABLE news (
 npm install puppeteer-core cheerio @sparticuz/chromium-min
 ```
 
-### 2. 部署到 Vercel
+### 2. Node.js 版本要求
+**重要**: 需要 Node.js 20.9.0 或更高版本
+```bash
+# 检查当前版本
+node --version
+
+# 如果版本过低，升级到最新 LTS
+nvm install --lts
+nvm use --lts
+```
+
+### 3. 部署到 Vercel
 ```bash
 vercel --prod
 ```

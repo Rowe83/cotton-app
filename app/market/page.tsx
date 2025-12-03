@@ -59,7 +59,7 @@ export default function MarketPage() {
             </Button>
           </Link>
           <div className="flex-1 text-center">
-            <h1 className="text-lg font-semibold">行情</h1>
+          <h1 className="text-lg font-semibold">行情</h1>
             <p className="text-xs text-muted-foreground">
               {formatLastUpdateTime(lastUpdateTime)}
             </p>
@@ -101,7 +101,7 @@ export default function MarketPage() {
             </Button>
           </div>
         ) : (
-          <div className="space-y-3">
+        <div className="space-y-3">
             {displayVarieties.map((variety, index) => (
               <Link key={variety.id} href={`/price/${encodeURIComponent(variety.name)}`}>
                 <Card className={`p-4 bg-card hover:bg-card/80 transition-all duration-300 cursor-pointer ${
@@ -110,18 +110,18 @@ export default function MarketPage() {
                     : "hover:shadow-red-500/10 hover:shadow-lg"
                 } animate-in slide-in-from-bottom-2`}
                 style={{ animationDelay: `${index * 100}ms` }}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h3 className="font-semibold mb-1">{variety.name}</h3>
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold">{variety.price}</span>
-                        <div
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">{variety.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold">{variety.price}</span>
+                      <div
                           className={`flex items-center gap-1 text-sm font-medium transition-all duration-500 ${
                             variety.isPositive
                               ? "text-green-600 animate-in zoom-in-50"
                               : "text-red-600 animate-in zoom-in-50"
-                          }`}
-                        >
+                        }`}
+                      >
                           {variety.isPositive ? (
                             <TrendingUp className="w-4 h-4 animate-bounce" />
                           ) : (
@@ -130,30 +130,30 @@ export default function MarketPage() {
                           <span className={`transition-all duration-500 ${
                             variety.isPositive ? "animate-pulse" : ""
                           }`}>
-                            {variety.change}
+                        {variety.change}
                           </span>
-                        </div>
                       </div>
                     </div>
-                    <Button variant="ghost" size="icon">
-                      <Star className="w-5 h-5 text-muted-foreground" />
-                    </Button>
                   </div>
+                  <Button variant="ghost" size="icon">
+                    <Star className="w-5 h-5 text-muted-foreground" />
+                  </Button>
+                </div>
 
-                  {/* Mini stats */}
-                  <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
-                    <div>成交量：{variety.volume}</div>
-                    <div>24h高：{variety.high}</div>
-                  </div>
+                {/* Mini stats */}
+                <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+                  <div>成交量：{variety.volume}</div>
+                  <div>24h高：{variety.high}</div>
+                </div>
 
                   {/* Last update time */}
                   <div className="mt-2 text-xs text-muted-foreground">
                     更新时间: {formatLastUpdateTime(variety.updatedAt)}
                   </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
         )}
       </div>
 

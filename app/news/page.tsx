@@ -58,7 +58,7 @@ export default function NewsPage() {
       <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">市场资讯</h1>
+          <h1 className="text-lg font-semibold">市场资讯</h1>
             <p className="text-xs text-muted-foreground">
               {formatLastUpdateTime(lastUpdateTime)}
             </p>
@@ -73,9 +73,9 @@ export default function NewsPage() {
             >
               <RefreshCw className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <Search className="w-5 h-5" />
-            </Button>
+          <Button variant="ghost" size="icon">
+            <Search className="w-5 h-5" />
+          </Button>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function NewsPage() {
             </Button>
           </div>
         ) : (
-          <div className="space-y-3">
+        <div className="space-y-3">
             {displayNews.map((item, idx) => (
               <div
                 key={`${item.title}-${idx}`}
@@ -135,8 +135,8 @@ export default function NewsPage() {
               >
                 <NewsCard {...item} />
               </div>
-            ))}
-          </div>
+          ))}
+        </div>
         )}
       </div>
 

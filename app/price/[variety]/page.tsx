@@ -125,9 +125,9 @@ const PricePage = ({ params }: { params: { variety: string } }) => {
             >
               <RefreshCw className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <Star className="w-5 h-5" />
-            </Button>
+          <Button variant="ghost" size="icon">
+            <Star className="w-5 h-5" />
+          </Button>
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@ const PricePage = ({ params }: { params: { variety: string } }) => {
         ) : priceData ? (
           <>
             <Card className="p-6 bg-card animate-in slide-in-from-bottom-2">
-              <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
                   <p className="text-sm text-muted-foreground mb-2">24h 最高</p>
                   <p className="text-2xl font-bold text-green-600">{priceData.high.toLocaleString()}</p>
@@ -231,7 +231,7 @@ const PricePage = ({ params }: { params: { variety: string } }) => {
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <span className="text-3xl font-bold">{priceData.price.toLocaleString()}</span>
                   <span className="text-lg text-muted-foreground">元/吨</span>
-                </div>
+            </div>
                 <div className={`flex items-center justify-center gap-1 text-lg font-medium transition-all duration-500 ${
                   priceData.is_positive
                     ? "text-green-600 animate-in zoom-in-50"
@@ -247,31 +247,31 @@ const PricePage = ({ params }: { params: { variety: string } }) => {
                   }`}>
                     {priceData.change}
                   </span>
-                </div>
-              </div>
-            </Card>
+            </div>
+          </div>
+        </Card>
 
             <Card className="p-6 bg-card animate-in slide-in-from-bottom-2" style={{ animationDelay: "100ms" }}>
-              <h3 className="font-semibold mb-4">市场指标</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">价格波动区间</span>
+          <h3 className="font-semibold mb-4">市场指标</h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">价格波动区间</span>
                   <span className="font-medium">{priceData.low.toLocaleString()} - {priceData.high.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">平均成交价</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">平均成交价</span>
                   <span className="font-medium">{priceData.avg_price.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">历史成交量（周）</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">历史成交量（周）</span>
                   <span className="font-medium">{(priceData.history_volume / 1000).toFixed(1)}K手</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">成交量</span>
                   <span className="font-medium">{(priceData.volume / 1000).toFixed(1)}K手</span>
-                </div>
-              </div>
-            </Card>
+            </div>
+          </div>
+        </Card>
           </>
         ) : (
           <div className="text-center py-8">

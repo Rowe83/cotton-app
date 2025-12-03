@@ -160,7 +160,7 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
             </Button>
           </Link>
           <div className="flex-1 text-center">
-            <h1 className="text-lg font-semibold">价格预警</h1>
+          <h1 className="text-lg font-semibold">价格预警</h1>
             <p className="text-xs text-muted-foreground">
               {formatLastUpdateTime(lastUpdateTime)}
             </p>
@@ -192,69 +192,69 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
           ) : (
             <>
               <Card className="p-4 bg-card animate-in slide-in-from-top-2">
-                <label className="text-sm text-muted-foreground mb-2 block">棉花品种</label>
-                <div className="w-full px-3 py-2 rounded bg-muted/50 text-foreground text-sm">{variety_name}</div>
-              </Card>
+            <label className="text-sm text-muted-foreground mb-2 block">棉花品种</label>
+            <div className="w-full px-3 py-2 rounded bg-muted/50 text-foreground text-sm">{variety_name}</div>
+          </Card>
 
               <Card className="p-4 bg-card animate-in slide-in-from-top-2" style={{ animationDelay: "50ms" }}>
-                <label className="text-sm text-muted-foreground mb-2 block">预警条件</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {["低于或等于", "高于或等于"].map((condition) => (
-                    <button
-                      key={condition}
-                      onClick={() => setSelectedCondition(condition)}
-                      className={`px-3 py-2 rounded text-sm font-medium transition border ${
-                        selectedCondition === condition
+            <label className="text-sm text-muted-foreground mb-2 block">预警条件</label>
+            <div className="grid grid-cols-2 gap-2">
+              {["低于或等于", "高于或等于"].map((condition) => (
+                <button
+                  key={condition}
+                  onClick={() => setSelectedCondition(condition)}
+                  className={`px-3 py-2 rounded text-sm font-medium transition border ${
+                    selectedCondition === condition
                           ? "bg-primary/20 border-primary text-primary animate-in zoom-in-50"
-                          : "bg-card border-border text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {condition}
-                    </button>
-                  ))}
-                </div>
-              </Card>
+                      : "bg-card border-border text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {condition}
+                </button>
+              ))}
+            </div>
+          </Card>
 
               <Card className="p-4 bg-card animate-in slide-in-from-top-2" style={{ animationDelay: "100ms" }}>
-                <label className="text-sm text-muted-foreground mb-2 block">目标价格（元/吨）</label>
-                <input
-                  type="number"
-                  value={targetPrice}
-                  onChange={(e) => setTargetPrice(e.target.value)}
-                  placeholder="请输入价格"
+            <label className="text-sm text-muted-foreground mb-2 block">目标价格（元/吨）</label>
+            <input
+              type="number"
+              value={targetPrice}
+              onChange={(e) => setTargetPrice(e.target.value)}
+              placeholder="请输入价格"
                   className="w-full px-3 py-2 rounded bg-input border border-border text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              </Card>
+            />
+          </Card>
 
-              {/* Notifications */}
-              <div className="space-y-3 py-2">
+          {/* Notifications */}
+          <div className="space-y-3 py-2">
                 <div className="flex items-center justify-between p-3 rounded bg-card border border-border animate-in slide-in-from-bottom-2" style={{ animationDelay: "150ms" }}>
-                  <label className="text-sm">App内推送</label>
-                  <button
-                    onClick={() => setAppNotification(!appNotification)}
+              <label className="text-sm">App内推送</label>
+              <button
+                onClick={() => setAppNotification(!appNotification)}
                     className={`relative w-12 h-6 rounded-full transition ${appNotification ? "bg-green-500" : "bg-gray-300"}`}
-                  >
-                    <div
+              >
+                <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform shadow-sm ${
-                        appNotification ? "translate-x-6" : "translate-x-0.5"
-                      }`}
-                    />
-                  </button>
-                </div>
+                    appNotification ? "translate-x-6" : "translate-x-0.5"
+                  }`}
+                />
+              </button>
+            </div>
                 <div className="flex items-center justify-between p-3 rounded bg-card border border-border animate-in slide-in-from-bottom-2" style={{ animationDelay: "200ms" }}>
-                  <label className="text-sm">短信通知</label>
-                  <button
-                    onClick={() => setSmsNotification(!smsNotification)}
+              <label className="text-sm">短信通知</label>
+              <button
+                onClick={() => setSmsNotification(!smsNotification)}
                     className={`relative w-12 h-6 rounded-full transition ${smsNotification ? "bg-green-500" : "bg-gray-300"}`}
-                  >
-                    <div
+              >
+                <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform shadow-sm ${
-                        smsNotification ? "translate-x-6" : "translate-x-0.5"
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
+                    smsNotification ? "translate-x-6" : "translate-x-0.5"
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
 
               <Button
                 className="w-full animate-in slide-in-from-bottom-2"
@@ -271,7 +271,7 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
                 ) : (
                   "创建预警"
                 )}
-              </Button>
+          </Button>
             </>
           )}
         </div>
@@ -287,7 +287,7 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
             ))}
           </div>
         ) : (
-          <div className="space-y-3">
+        <div className="space-y-3">
             {getDisplayAlerts().length === 0 ? (
               <div className="text-center py-8 animate-in fade-in-50">
                 <p className="text-muted-foreground">暂无预警设置</p>
@@ -304,39 +304,39 @@ export default function AlertPage({ params }: { params: { variety: string } }) {
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold">{alert.type}</h3>
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="font-semibold">{alert.type}</h3>
                       <p className="text-sm text-muted-foreground">当前价格: {alert.currentPrice.toLocaleString()} 元/吨</p>
-                    </div>
+                </div>
                     <span className={`text-xs font-medium px-3 py-1 rounded-full ${alert.statusColor} animate-in zoom-in-50`}>
                       {alert.status}
                     </span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm mb-3">
-                    <div>
+              </div>
+              <div className="flex items-center justify-between text-sm mb-3">
+                <div>
                       <span className="text-lg font-bold text-primary">{alert.condition} {alert.price.toLocaleString()}</span>
-                      <span className="text-muted-foreground ml-2">元/吨</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">创建于: {alert.createdAt}</span>
-                  </div>
-                  <div className="flex gap-2">
+                  <span className="text-muted-foreground ml-2">元/吨</span>
+                </div>
+                <span className="text-xs text-muted-foreground">创建于: {alert.createdAt}</span>
+              </div>
+              <div className="flex gap-2">
                     <Button variant="ghost" size="sm" className="flex-1 hover:bg-primary/10">
-                      编辑
-                    </Button>
+                  编辑
+                </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-red-600 hover:bg-red-50 hover:text-red-700"
                       onClick={() => handleDeleteAlert(alert.id)}
                     >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </Card>
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            </Card>
               ))
             )}
-          </div>
+        </div>
         )}
       </div>
 
